@@ -1,0 +1,28 @@
+{
+  "name": "dictionary-api",
+  "version": "1.0.0",
+  "description": "Dictionary API (Application Program Interface) build on Node.js.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devashishpiyush/Dictionary-API.git"
+  },
+  "keywords": [
+    "dictionary",
+    "api",
+    "dictionary-api"
+  ],
+  "author": "Devashish Roy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devashishpiyush/Dictionary-API/issues"
+  },
+  "homepage": "https://github.com/devashishpiyush/Dictionary-API#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  }
+}
