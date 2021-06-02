@@ -1,7 +1,66 @@
 const express = require("express");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
+
+/**
+ * Database Configuration
+ */
+const DB = {
+    host : process.env.DB_HOST,
+    port : process.env.DB_PORT,
+    name : process.env.DB_NAME,
+    protocol : "mongodb://"
+}
+
+/**
+ * Connect to Database
+ */
+mongoose.connect(`${DB.protocol}${DB.host}:${DB.port}/${DB.name}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+/**
+ * Model's Schema
+ */
+const dictionarySchema = new mongoose.Schema({
+    word: String,
+    pronunciation: String,
+    part_of_speech: String,
+    description: String
+});
+
+/**
+ * Create the Model using the schema
+ */
+const Dictionary = new mongoose.model("dictionary", dictionarySchema);
+
+/**
+ * Testing Database Connection and Operations
+ * use the Dictionary model to do operations.
+ * Example Dictionary.find();
+ */
+
+/** Test Data */
+// const request = {
+//     word: "Test Word",
+//     pronunciation : "test pronuncation",
+//     part_of_speech : "noun",
+//     description : "Test Desctiption"
+// }
+/** Test to save new word to the dictionary */
+// const newWord = new Dictionary(request);
+// newWord.save((err, result) => {
+//     if(err) {
+//         console.log(err);
+//     } else {
+//         console.log(result);
+//     }
+// });
+/** End of Testing */
+
 
 /**
  * API endpoint
