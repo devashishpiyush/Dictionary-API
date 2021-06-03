@@ -1,8 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const app = express();
+app.use(bodyParser.urlencoded({extended: true}));
 
 /**
  * Database Configuration
@@ -72,12 +74,20 @@ const endpoint = "/api/v1";
  */
 app.get(`${endpoint}/dictionary`, (req, res) => {
     console.log(`GET : ${endpoint}/dictionary`);
-
-    res.json(
-        {
-            message : "Show the whole dictionary."
+    Dictionary.find({}, (error, result) => {
+        if(error) {                             // If error, log it.
+            re.json({
+                status: false,
+                message: error
+            });
+        } else {                                // else, show the whole dictionary.
+            res.json({
+                status: true,
+                message: "The Dictionary",
+                data: result
+            });
         }
-    );
+    });
 });
 
 /**
@@ -99,12 +109,27 @@ app.delete(`${endpoint}/dictionary`, (req, res) => {
 app.get(`${endpoint}/dictionary/:key`, (req, res) => {
     const key = req.params.key;
     console.log(`GET : ${endpoint}/dictionary/${key}`);
-
-    res.json(
-        {
-            message : "To get a specific word form the dictionary."
+    Dictionary.findOne({word: key}, (error, result) => {
+        if(error) {                             // If any error occurs log it.
+            res.json({
+                status: false,
+                message: error
+            }); 
+        } else {                                // If there is no error go for the result.
+            if(result) {                        // If match found then show the data.
+                res.json({
+                    status: true,
+                    message: "Match found.",
+                    data: result
+                });
+            } else {                            // If match not found then log the error message.
+                res.json({
+                    status: false,
+                    message: "No match found.",
+                });
+            }
         }
-    );
+    });
 });
 
 /**
@@ -112,12 +137,22 @@ app.get(`${endpoint}/dictionary/:key`, (req, res) => {
  */
 app.post(`${endpoint}/dictionary`, (req, res) => {
     console.log(`POST : ${endpoint}/dictionary`);
-
-    res.json(
-        {
-            message : "To add a specific word in the dictionary."
+    const bodyRequest = req.body;
+    const newWord = new Dictionary(bodyRequest);
+    newWord.save((error, result) => {
+        if(error) {                         // If any error occurs log it.
+            res.json({
+                status: false,
+                message: error
+            });
+        } else {                            // If not show the success message.
+            res.json({
+                status: true,
+                message: "New word added to the dictionary.",
+                data: result
+            });
         }
-    );
+    });
 });
 
 /**
@@ -167,5 +202,5 @@ app.delete(`${endpoint}/dictionary/:key`, (req, res) => {
  * Server listining at specific port
  */
 app.listen(process.env.PORT, () => {
-    console.log(`Server runnig at port ${process.env.PORT}`);
+    console.log(`Server running at port ${process.env.PORT}`);
 });
