@@ -18,3 +18,4 @@ Dictionary API (Application Program Interface) is an API build on Node.js that g
 1. Express
 2. dotenv
 3. Mongoose
+4. body-parser
